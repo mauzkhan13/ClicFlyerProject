@@ -70,7 +70,7 @@ class ClicFlyerScraper:
         retailer_ids = []
         offer_counts = []
 
-        for retailer in retailers_data:
+        for retailer in retailers_data[:1]:
             offers = retailer.get('offerCount', 0)
             pages = math.ceil(offers / 12) if offers > 0 else 0
             
