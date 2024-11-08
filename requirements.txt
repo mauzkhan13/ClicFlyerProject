@@ -3,3 +3,5 @@ uvicorn
 requests
 pandas
 python-dotenv
+pymongo[srv]==3.10.1
+apscheduler
