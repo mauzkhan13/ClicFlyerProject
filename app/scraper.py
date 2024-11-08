@@ -220,24 +220,15 @@ class ClicFlyerScraper:
         
         return details
 
-    def save_data(self, details: List[Dict[str, Any]], output_dir: str = None):
-        """Save data to JSON file and return filepath."""
+def save_data(self, details: List[Dict[str, Any]], output_dir: str = None) -> Dict[str, Any]:
+        """Convert data to JSON format and return it."""
         if output_dir is None:
             output_dir = os.getcwd()
-            
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"clicflyer_data_{timestamp}.json"
-        filepath = Path(output_dir) / filename
-        
+
         df = pd.DataFrame(details)
-        df.to_json(filepath, orient='records', lines=True, force_ascii=False)
-        
-        with open(filepath, 'r', encoding='utf-8') as file:
-            content = file.read()
-        content = content.replace('\\/', '/')
-        with open(filepath, 'w', encoding='utf-8') as file:
-            file.write(content)
-        
-        logging.info(f"Data saved successfully to {filepath}")
-        return filepath
+        json_data = df.to_json(orient='records', lines=True, force_ascii=False)
+        json_data = json_data.replace('\\/', '/')
+        parsed_json = [json.loads(line) for line in json_data.splitlines()]
+        logging.info(f"Data converted to JSON successfully.")
+        return parsed_json
 
